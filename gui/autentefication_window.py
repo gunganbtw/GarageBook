@@ -6,6 +6,10 @@ class AuthWindow:
     def __init__(self, on_login_success):
         self.on_login_success = on_login_success
 
+
+        ctk.set_appearance_mode("light")
+        ctk.set_default_color_theme("green")
+
         self.root = ctk.CTk()
         self.root.title("GarageBook - Авторизация")
         self.root.geometry("400x700")
