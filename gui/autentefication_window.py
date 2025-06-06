@@ -7,7 +7,7 @@ class AuthWindow:
         self.on_login_success = on_login_success
 
 
-        ctk.set_appearance_mode("light")
+        ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("green")
 
         self.root = ctk.CTk()
@@ -76,7 +76,7 @@ class AuthWindow:
 
         self.email_label = ctk.CTkLabel(
             main_frame,
-            text="Email (необязательно):",
+            text="Email:",
             state="disabled"
         )
         self.email_entry = ctk.CTkEntry(
