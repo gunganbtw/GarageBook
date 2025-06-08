@@ -321,7 +321,9 @@ def delete_service_history(car_id):
         conn.close()
 
 
-def update_service_history(old_car_id, new_car_id=None, motor_oil=None, air_filter=None):
+def update_service_history(old_car_id, new_car_id=None, motor_oil=None, air_filter=None,
+                           transmission_oil=None, cabin_filter=None, oil_filter=None,
+                           fuel_filter=None, mileage=None):
     """Обновление записи об обслуживании"""
     conn = get_connection()
     if not conn:
@@ -329,7 +331,8 @@ def update_service_history(old_car_id, new_car_id=None, motor_oil=None, air_filt
 
     try:
         with conn.cursor() as cursor:
-            cursor.callproc('update_service_history', (old_car_id, new_car_id, motor_oil, air_filter))
+            cursor.callproc('update_service_history', (old_car_id, new_car_id, motor_oil, air_filter, transmission_oil, cabin_filter,
+                                                       oil_filter, fuel_filter, mileage))
             result = cursor.fetchone()[0]
             conn.commit()
             return result
