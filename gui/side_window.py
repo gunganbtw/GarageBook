@@ -110,11 +110,10 @@ class GarageCarDialog(CTkToplevel):
     def cancel(self):
         self.destroy()
 
-
-def load_garage(self):
+def load_garage(self, user_id):
     """Отображает список машин"""
     for widget in self.content_frame.winfo_children():
-        widget.destroy()    
+        widget.destroy()
 
     self.car_list = get_cars()
     self.selected_car_id = None
@@ -124,14 +123,17 @@ def load_garage(self):
         return
 
     for car in self.car_list:
-        frame = CTkFrame(self.content_frame, height=60, border_width=1, border_color="#ccc")
-        frame.pack(fill="x", pady=3)
-        frame.bind("<Button-1>", lambda e, c=car: select_car(self, c))
 
-        CTkLabel(frame, text=f"{car[1]} | VIN: {car[3]}", font=("Arial", 12)).pack(side="left", padx=10)
+        if int(user_id) == int(car[5]):
 
-        open_btn = CTkButton(frame, text="Открыть", width=80, command=lambda c=car: show_car_details(self, c))
-        open_btn.pack(side="right", padx=10)
+            frame = CTkFrame(self.content_frame, height=60, border_width=1, border_color="#ccc")
+            frame.pack(fill="x", pady=3)
+            frame.bind("<Button-1>", lambda e, c=car: select_car(self, c))
+
+            CTkLabel(frame, text=f"{car[1]} | VIN: {car[3]}", font=("Arial", 12)).pack(side="left", padx=10)
+
+            open_btn = CTkButton(frame, text="Открыть", width=80, command=lambda c=car: show_car_details(self, c))
+            open_btn.pack(side="right", padx=10)
 
 
 def select_car(self, car):
@@ -160,7 +162,7 @@ def add_car_action(self):
     if dialog.result:
         result = add_car(*dialog.result)
         if result:
-            load_garage(self)
+            load_garage(self, self.user_id)
 
 
 def edit_car_action(self):
@@ -175,7 +177,7 @@ def edit_car_action(self):
         result = update_car(self.selected_car_id, *dialog.result)
         if result:
             self.selected_car_id = None
-            load_garage(self)
+            load_garage(self, self.user_id)
 
 
 def delete_car_action(self):
@@ -185,7 +187,7 @@ def delete_car_action(self):
     result = delete_car(self.selected_car_id)
     if result:
         self.selected_car_id = None
-        load_garage(self)
+        load_garage(self, self.user_id)
 
 class ServiceDialog(CTkToplevel):
     """Диалог для добавления или изменения записи о замене расходников"""
@@ -457,7 +459,7 @@ class SideWindow(CTkToplevel):
             ).pack(side="right", padx=10, pady=5)
 
         if self.title_name == "Гараж":
-            load_garage(self)
+            load_garage(self, self.user_id)
 
             self.add_btn = CTkButton(footer_frame, text="Добавить", command=lambda: add_car_action(self))
             self.add_btn.pack(side="left", padx=10)
@@ -673,7 +675,7 @@ class SideWindow(CTkToplevel):
 
                 # elif flag == 1 and (order[0] in car and order[1] in car)
                 
-            if order == '': load_garage(self)
+            if order == '': load_garage(self, self.user_id)
 
         elif self.title_name == "История поломок":
             

@@ -3,9 +3,11 @@ from database.GarageBase import verify_user, add_user
 
 
 class AuthWindow:
+
+    USER_ID = None
+
     def __init__(self, on_login_success):
         self.on_login_success = on_login_success
-
 
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("green")

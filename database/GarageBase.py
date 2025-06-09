@@ -91,7 +91,6 @@ def get_user_by_id(user_id):
     finally:
         conn.close()
 
-
 def add_car(car_brand, vin, color, model):
     """Добавление нового автомобиля"""
     conn = get_connection()
@@ -251,7 +250,7 @@ def get_cars():
         with conn.cursor() as cursor:
             cursor.execute(
                 sql.SQL('''
-                SELECT car_id, car_brand, car_model, vin_code, car_color FROM car
+                SELECT car_id, car_brand, car_model, vin_code, car_color, user_id FROM car
                 ''')
             )
             return cursor.fetchall()

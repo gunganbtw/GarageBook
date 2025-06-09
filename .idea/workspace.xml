@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5963e88c-2d4e-42ec-aa92-7ee24d523e43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/GarageBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/database/GarageBase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/autentefication_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/autentefication_window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/side_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/side_window.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,7 +41,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "new__dev",
+    "git-widget-placeholder": "user__id__branch",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/Volodya/Desktop/Learning/GarageBook/GarageBook",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
