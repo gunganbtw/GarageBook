@@ -336,9 +336,9 @@ class SideWindow(CTkToplevel):
 
         # Настройки окна
         self.title(title)
-        self.geometry("900x600+{}+{}".format(
-            parent.winfo_x() + 300,
-            parent.winfo_y() + 50
+        self.geometry("1200x900+{}+{}".format(
+            parent.winfo_x() + 500,
+            parent.winfo_y() + 100
         ))
         self.resizable(False, False)
         self.attributes("-alpha", 0.9)
@@ -380,7 +380,7 @@ class SideWindow(CTkToplevel):
         self.search_frame = CTkFrame(main_frame)
         self.search_frame.pack(side="top", fill="x", pady=10)
 
-        self.search_entry = CTkEntry(self.search_frame, width=800, placeholder_text='Поиск🔍')
+        self.search_entry = CTkEntry(self.search_frame, width=1100, placeholder_text='Поиск🔍')
         self.search_entry.pack(side="left")
 
         CTkButton(
@@ -434,8 +434,7 @@ class SideWindow(CTkToplevel):
                 text="Изменить запись",
                 width=120,
                 height=35,
-                command=self.edit_break_record,
-                state="disabled"
+                command=self.edit_break_record
             )
             self.edit_btn.pack(side="left", padx=10, pady=5)
 
@@ -444,8 +443,7 @@ class SideWindow(CTkToplevel):
                 text="Удалить запись",
                 width=120,
                 height=35,
-                command=self.delete_break_record,
-                state="disabled"
+                command=self.delete_break_record
             )
             self.delete_btn.pack(side="left", padx=10, pady=5)
 
@@ -457,15 +455,6 @@ class SideWindow(CTkToplevel):
                 height=35,
                 command=self.load_break_history
             ).pack(side="right", padx=10, pady=5)
-        else:
-            # Кнопки для других окон
-            for action in ["Добавить", "Изменить", "Удалить"]:
-                CTkButton(
-                    footer_frame,
-                    text=f"{action} {title.lower()}",
-                    width=120,
-                    height=35
-                ).pack(side="left", padx=10, pady=5)
 
         if self.title_name == "Гараж":
             load_garage(self)
