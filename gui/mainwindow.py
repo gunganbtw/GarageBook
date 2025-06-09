@@ -42,14 +42,16 @@ class MainWindow:
         self.account_btn = CTkButton(
             self.account_frame,
             text="Аккаунт",
+            fg_color="#818181",
+            hover_color="#6a6a6a",
             command=self.show_account_menu
         )
         self.account_btn.pack(pady=0)
 
         # Блок кнопок
-        self.buttons_frame = CTkFrame(self.root, width=350, height=550, fg_color="#40486c")
+        self.buttons_frame = CTkFrame(self.root, width=350, height=500, fg_color="#40486c")
         self.buttons_frame.pack_propagate(False)
-        self.buttons_frame.place(relx=0.06, rely=0.51, anchor="center")
+        self.buttons_frame.place(relx=0.06, rely=0.55, anchor="center")
 
         # Блок контактов
         self.contacts_frame = CTkFrame(self.root, width=250, height=100, fg_color="#40336b")
@@ -66,7 +68,6 @@ class MainWindow:
             ("Гараж", self.open_garage_window),
             ("История поломок", self.open_repairs_window),
             ("Замена расходников", self.open_parts_window),
-            ("Форумы", self.open_forums_window)
         ]
 
         for text, command in buttons:
@@ -75,6 +76,8 @@ class MainWindow:
                 text=text,
                 font=("Arial", 18),
                 height=50,
+                fg_color="#818181",  # Добавили серый цвет
+                hover_color="#6a6a6a",  # Добавили цвет при наведении
                 command=command
             )
             btn.pack(pady=15, fill="x")
@@ -109,9 +112,6 @@ class MainWindow:
 
     def open_parts_window(self):
         self.open_window("Замена расходников")
-
-    def open_forums_window(self):
-        self.open_window("Форумы")
 
     def run(self):
         self.root.mainloop()
