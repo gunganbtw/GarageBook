@@ -138,7 +138,8 @@ class AuthWindow:
             user = verify_user(username, password)
             if user:
                 self.show_message("Успешный вход!", is_error=False)
-                self.root.after(1000, lambda: self.on_login_success(user[0]))
+                # Передаем весь кортеж user, а не только user[0]
+                self.root.after(1000, lambda: self.on_login_success(user))
             else:
                 self.show_message("Неверное имя пользователя или пароль")
         else:

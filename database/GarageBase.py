@@ -91,7 +91,7 @@ def get_user_by_id(user_id):
     finally:
         conn.close()
 
-def add_car(car_brand, vin, color, model):
+def add_car(car_brand, vin, color, model, release_year, engine_type, fuel_type, engine_capacity, transmission_type, user_id):
     """Добавление нового автомобиля"""
     conn = get_connection()
     if not conn:
@@ -99,9 +99,16 @@ def add_car(car_brand, vin, color, model):
 
     try:
         with conn.cursor() as cursor:
-            cursor.callproc('add_car', (car_brand, vin, color, model))
+            cursor.execute(
+                sql.SQL('''
+                INSERT INTO car (car_brand, vin_code, car_color, car_model, release_year, engine_type, fuel_type, engine_capacity, transmission_type, user_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING car_id
+                '''),
+                (car_brand, vin, color, model, release_year, engine_type, fuel_type, engine_capacity, transmission_type, user_id)
+            )
             conn.commit()
-            return True
+            return cursor.fetchone()[0]
     except psycopg2.Error as e:
         print(f"Ошибка при добавлении автомобиля: {e}")
         return False
@@ -109,7 +116,9 @@ def add_car(car_brand, vin, color, model):
         conn.close()
 
 
-def update_car(car_id, car_brand=None, vin=None, color=None, model=None):
+def update_car(car_id, car_brand=None, vin=None, color=None, model=None,
+              release_year=None, engine_type=None, fuel_type=None,
+              engine_capacity=None, transmission_type=None):
     """Обновление данных автомобиля"""
     conn = get_connection()
     if not conn:
@@ -117,7 +126,9 @@ def update_car(car_id, car_brand=None, vin=None, color=None, model=None):
 
     try:
         with conn.cursor() as cursor:
-            cursor.callproc('update_car', (car_id, car_brand, vin, color, model))
+            cursor.callproc('update_car', (car_id, car_brand, vin, color, model,
+                                         release_year, engine_type, fuel_type,
+                                         engine_capacity, transmission_type))
             result = cursor.fetchone()[0]
             conn.commit()
             return result
@@ -271,7 +282,11 @@ def get_car_by_id(car_id):
         with conn.cursor() as cursor:
             cursor.execute(
                 sql.SQL('''
-                SELECT car_id, car_brand, car_model, vin_code, car_color FROM car
+                SELECT 
+                    car_id, car_brand, car_model, vin_code, car_color,
+                    release_year, engine_type, fuel_type, 
+                    engine_capacity, transmission_type, user_id
+                FROM car
                 WHERE car_id = %s
                 '''),
                 (car_id,)

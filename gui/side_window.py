@@ -63,22 +63,23 @@ class BreakHistoryDialog(CTkToplevel):
 
 class GarageCarDialog(CTkToplevel):
     """Диалог добавления/редактирования автомобиля"""
-    def __init__(self, parent, title, car_data=None):
+    def __init__(self, parent, title, car_data=None, user_id=None):
         super().__init__(parent)
         self.title(title)
-        self.geometry("400x300")
+        self.geometry("400x400")  # Увеличим размер окна для новых полей
         self.resizable(False, False)
         self.grab_set()
 
         self.result = None
         self.car_data = car_data
+        self.user_id = user_id
 
         main_frame = CTkFrame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
         self.entries = {}
-        labels = ["Бренд", "Модель", "VIN", "Цвет"]
-        keys = ["brand", "model", "vin", "color"]
+        labels = ["Бренд", "Модель", "VIN", "Цвет", "Год выпуска", "Тип двигателя", "Тип топлива", "Объем двигателя", "Тип коробки"]
+        keys = ["brand", "model", "vin", "color", "release_year", "engine_type", "fuel_type", "engine_capacity", "transmission_type"]
 
         for i, (label, key) in enumerate(zip(labels, keys)):
             CTkLabel(main_frame, text=label).grid(row=i, column=0, sticky="e", padx=5, pady=5)
@@ -87,13 +88,18 @@ class GarageCarDialog(CTkToplevel):
             self.entries[key] = entry
 
         if car_data:
-            self.entries["brand"].insert(0, car_data[1])
-            self.entries["model"].insert(0, car_data[2])
-            self.entries["vin"].insert(0, car_data[3])
-            self.entries["color"].insert(0, car_data[4])
+            self.entries["brand"].insert(0, car_data[1])  # car_brand
+            self.entries["model"].insert(0, car_data[2])  # car_model
+            self.entries["vin"].insert(0, car_data[3])  # vin_code
+            self.entries["color"].insert(0, car_data[4])  # car_color
+            self.entries["release_year"].insert(0, str(car_data[5]))  # release_year
+            self.entries["engine_type"].insert(0, car_data[6])  # engine_type
+            self.entries["fuel_type"].insert(0, car_data[7])  # fuel_type
+            self.entries["engine_capacity"].insert(0, str(car_data[8]))  # engine_capacity
+            self.entries["transmission_type"].insert(0, car_data[9])  # transmission_type
 
         button_frame = CTkFrame(main_frame)
-        button_frame.grid(row=5, column=0, columnspan=2, pady=10)
+        button_frame.grid(row=len(labels), column=0, columnspan=2, pady=10)
 
         CTkButton(button_frame, text="Сохранить", command=self.save).pack(side="left", padx=10)
         CTkButton(button_frame, text="Отмена", command=self.cancel).pack(side="left", padx=10)
@@ -103,9 +109,38 @@ class GarageCarDialog(CTkToplevel):
             self.entries["brand"].get(),
             self.entries["vin"].get(),
             self.entries["color"].get(),
-            self.entries["model"].get()
+            self.entries["model"].get(),
+            self.entries["release_year"].get(),
+            self.entries["engine_type"].get(),
+            self.entries["fuel_type"].get(),
+            self.entries["engine_capacity"].get(),
+            self.entries["transmission_type"].get(),
+            self.user_id  # Добавляем user_id в результат
         )
         self.destroy()
+
+    def cancel(self):
+        self.destroy()
+
+
+def add_car_action(self):
+    dialog = GarageCarDialog(self, "Добавить автомобиль", user_id=self.user_id)
+    self.wait_window(dialog)
+
+    if dialog.result:
+        # Проверяем, что user_id передан и не None
+        if not hasattr(self, 'user_id') or self.user_id is None:
+            print("Ошибка: user_id не установлен")
+            return False
+
+        try:
+            # Преобразуем user_id в int для уверенности
+            user_id = int(self.user_id)
+            result = add_car(*dialog.result, user_id=user_id)
+            if result:
+                load_garage(self, self.user_id)
+        except Exception as e:
+            print(f"Ошибка при добавлении автомобиля: {e}")
 
     def cancel(self):
         self.destroy()
@@ -123,9 +158,8 @@ def load_garage(self, user_id):
         return
 
     for car in self.car_list:
-
-        if int(user_id) == int(car[5]):
-
+        # Проверяем, что user_id в машине не None и соответствует текущему пользователю
+        if car[5] is not None and int(user_id) == int(car[5]):
             frame = CTkFrame(self.content_frame, height=60, border_width=1, border_color="#ccc")
             frame.pack(fill="x", pady=3)
             frame.bind("<Button-1>", lambda e, c=car: select_car(self, c))
@@ -147,22 +181,92 @@ def show_car_details(self, car):
 
     dialog = CTkToplevel(self)
     dialog.title("Информация о машине")
-    dialog.geometry("400x250")
+    dialog.geometry("500x400")  # Увеличим размер окна для дополнительных полей
     dialog.grab_set()
 
-    fields = ["ID", "Бренд", "Модель", "VIN", "Цвет"]
-    for i, val in enumerate(full_car):
-        CTkLabel(dialog, text=f"{fields[i]}: {val}", font=("Arial", 12)).pack(anchor="w", padx=10, pady=5)
+    # Основной фрейм для данных
+    main_frame = CTkFrame(dialog)
+    main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+    # Список полей и их человеко-читаемые названия
+    fields = [
+        ("ID", full_car[0]),
+        ("Бренд", full_car[1]),
+        ("Модель", full_car[2]),
+        ("VIN", full_car[3]),
+        ("Цвет", full_car[4]),
+        ("Год выпуска", full_car[5]),
+        ("Тип двигателя", full_car[6]),
+        ("Тип топлива", full_car[7]),
+        ("Объём двигателя", full_car[8]),
+        ("Тип трансмиссии", full_car[9])
+    ]
+
+    # Отображаем все поля
+    for i, (field_name, value) in enumerate(fields):
+        # Пропускаем пустые значения
+        if value is None:
+            continue
+
+        row_frame = CTkFrame(main_frame)
+        row_frame.pack(fill="x", pady=2)
+
+        CTkLabel(
+            row_frame,
+            text=f"{field_name}:",
+            font=("Arial", 12, "bold"),
+            width=150,
+            anchor="w"
+        ).pack(side="left", padx=5)
+
+        CTkLabel(
+            row_frame,
+            text=str(value),
+            font=("Arial", 12),
+            anchor="w"
+        ).pack(side="left", padx=5)
+
+    # Кнопка закрытия
+    button_frame = CTkFrame(dialog)
+    button_frame.pack(pady=10)
+
+    CTkButton(
+        button_frame,
+        text="Закрыть",
+        command=dialog.destroy
+    ).pack(pady=5)
 
 
 def add_car_action(self):
-    dialog = GarageCarDialog(self, "Добавить автомобиль")
+    dialog = GarageCarDialog(self, "Добавить автомобиль", user_id=self.user_id)
     self.wait_window(dialog)
 
     if dialog.result:
-        result = add_car(*dialog.result)
-        if result:
-            load_garage(self, self.user_id)
+        # Добавляем проверку user_id
+        if not hasattr(self, 'user_id') or self.user_id is None:
+            print("Ошибка: user_id не установлен")
+            return
+
+        try:
+            # Преобразуем user_id в int
+            user_id = int(self.user_id)
+            # Передаем все параметры, включая user_id
+            result = add_car(
+                dialog.result[0],  # brand
+                dialog.result[1],  # vin
+                dialog.result[2],  # color
+                dialog.result[3],  # model
+                dialog.result[4],  # release_year
+                dialog.result[5],  # engine_type
+                dialog.result[6],  # fuel_type
+                dialog.result[7],  # engine_capacity
+                dialog.result[8],  # transmission_type
+                user_id  # user_id
+            )
+            if result:
+                load_garage(self, self.user_id)
+        except Exception as e:
+            print(f"Ошибка при добавлении автомобиля: {e}")
 
 
 def edit_car_action(self):
@@ -170,11 +274,26 @@ def edit_car_action(self):
         return
 
     car = get_car_by_id(self.selected_car_id)
-    dialog = GarageCarDialog(self, "Изменить автомобиль", car)
+    if not car:
+        return
+
+    dialog = GarageCarDialog(self, "Изменить автомобиль", car_data=car)
     self.wait_window(dialog)
 
     if dialog.result:
-        result = update_car(self.selected_car_id, *dialog.result)
+        # Обновляем все поля автомобиля
+        result = update_car(
+            self.selected_car_id,
+            car_brand=dialog.result[0],
+            vin=dialog.result[1],
+            color=dialog.result[2],
+            model=dialog.result[3],
+            release_year=dialog.result[4],
+            engine_type=dialog.result[5],
+            fuel_type=dialog.result[6],
+            engine_capacity=dialog.result[7],
+            transmission_type=dialog.result[8]
+        )
         if result:
             self.selected_car_id = None
             load_garage(self, self.user_id)
