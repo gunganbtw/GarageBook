@@ -658,6 +658,11 @@ class SideWindow(CTkToplevel):
        
     def search_result(self):
         order = self.search_entry.get()
+        
+        flag = 0
+        if ' ' in order:
+            order = order.split(' ')
+            flag = 1
 
         for widget in self.content_frame.winfo_children():
             widget.destroy()
@@ -666,7 +671,7 @@ class SideWindow(CTkToplevel):
 
         if self.title_name == "Гараж":
             for car in car_list:
-                if order in car:
+                if (flag == 0 and order in car) or (flag == 1 and (order[0] in car and order[1] in car)):
 
                     frame = CTkFrame(self.content_frame, height=60, border_width=1, border_color="#ccc")
                     frame.pack(fill="x", pady=3)
@@ -676,6 +681,8 @@ class SideWindow(CTkToplevel):
 
                     open_btn = CTkButton(frame, text="Открыть", width=80, command=lambda c=car: show_car_details(self, c))
                     open_btn.pack(side="right", padx=10)
+
+                # elif flag == 1 and (order[0] in car and order[1] in car)
                 
             if order == '': load_garage(self)
 
@@ -683,11 +690,12 @@ class SideWindow(CTkToplevel):
             
             if order != '':
             
+                from database.GarageBase import get_break_history
                 history = get_break_history()
 
                 ids_car = []
                 for car in car_list:
-                    if order in car:
+                    if (flag == 0 and order in car) or (flag ==1 and (order[0] in car and order[1] in car)):
                         ids_car.append(car[0])
 
                 needed_history = []
@@ -768,7 +776,7 @@ class SideWindow(CTkToplevel):
 
                 ids_car = []
                 for car in car_list:
-                    if order in car:
+                    if (flag == 0 and order in car) or (flag == 1 and (order[0] in car and order[1] in car)):
                         ids_car.append(car[0])
 
                 needed_service = []
