@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5963e88c-2d4e-42ec-aa92-7ee24d523e43" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/testing/unittest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/GarageBook.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GarageBook.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/car_brands.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/GarageBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/database/GarageBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/autentefication_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/autentefication_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/mainwindow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/side_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/side_window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,9 +136,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.side_window" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.mainwindow" />
-        <item itemvalue="Python.side_window" />
       </list>
     </recent_temporary>
   </component>

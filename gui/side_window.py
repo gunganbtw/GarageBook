@@ -61,8 +61,10 @@ class BreakHistoryDialog(CTkToplevel):
     def cancel(self):
         self.destroy()
 
+
 class GarageCarDialog(CTkToplevel):
     """Диалог добавления/редактирования автомобиля"""
+
     def __init__(self, parent, title, car_data=None, user_id=None):
         super().__init__(parent)
         self.title(title)
@@ -78,8 +80,10 @@ class GarageCarDialog(CTkToplevel):
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
         self.entries = {}
-        labels = ["Бренд", "Модель", "VIN", "Цвет", "Год выпуска", "Тип двигателя", "Тип топлива", "Объем двигателя", "Тип коробки"]
-        keys = ["brand", "model", "vin", "color", "release_year", "engine_type", "fuel_type", "engine_capacity", "transmission_type"]
+        labels = ["Бренд", "Модель", "VIN", "Цвет", "Год выпуска", "Тип двигателя", "Тип топлива", "Объем двигателя",
+                  "Тип коробки"]
+        keys = ["brand", "model", "vin", "color", "release_year", "engine_type", "fuel_type", "engine_capacity",
+                "transmission_type"]
 
         for i, (label, key) in enumerate(zip(labels, keys)):
             CTkLabel(main_frame, text=label).grid(row=i, column=0, sticky="e", padx=5, pady=5)
@@ -144,6 +148,7 @@ def add_car_action(self):
 
     def cancel(self):
         self.destroy()
+
 
 def load_garage(self, user_id):
     """Отображает список машин"""
@@ -308,8 +313,10 @@ def delete_car_action(self):
         self.selected_car_id = None
         load_garage(self, self.user_id)
 
+
 class ServiceDialog(CTkToplevel):
     """Диалог для добавления или изменения записи о замене расходников"""
+
     def __init__(self, parent, title, car_id=None, data=None):
         super().__init__(parent)
         self.title(title)
@@ -320,57 +327,54 @@ class ServiceDialog(CTkToplevel):
         main_frame = CTkFrame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-        CTkLabel(main_frame, text="ID машины:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
-        self.car_id_entry = CTkEntry(main_frame)
-        self.car_id_entry.grid(row=0, column=1, padx=5, pady=5)
+        fields = [
+            ("ID машины:", "car_id_entry"),
+            ("Моторное масло:", "oil_entry"),
+            ("Воздушный фильтр:", "air_filter_entry"),
+            ("Трансмиссионное масло:", "transmission_oil_entry"),
+            ("Салонный фильтр:", "cabin_filter_entry"),
+            ("Масляный фильтр:", "oil_filter_entry"),
+            ("Топливный фильтр:", "fuel_filter_entry"),
+            ("Пробег:", "mileage_entry")
+        ]
 
-        CTkLabel(main_frame, text="Моторное масло:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
-        self.oil_entry = CTkEntry(main_frame)
-        self.oil_entry.grid(row=1, column=1, padx=5, pady=5)
+        self.entries = {}
 
-        CTkLabel(main_frame, text="Воздушный фильтр:").grid(row=2, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=2, column=1, padx=5, pady=5)
-
-        CTkLabel(main_frame, text="Трансмиссионное масло:").grid(row=3, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=3, column=1, padx=5, pady=5)
-
-        CTkLabel(main_frame, text="Салонный фильтр:").grid(row=4, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=4, column=1, padx=5, pady=5)
-
-        CTkLabel(main_frame, text="Маслянный фильтр:").grid(row=5, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=5, column=1, padx=5, pady=5)
-
-        CTkLabel(main_frame, text="Топливный фильтр:").grid(row=6, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=6, column=1, padx=5, pady=5)
-
-        CTkLabel(main_frame, text="Пробег:").grid(row=7, column=0, padx=5, pady=5, sticky="e")
-        self.filter_entry = CTkEntry(main_frame)
-        self.filter_entry.grid(row=7, column=1, padx=5, pady=5)
+        for i, (label_text, entry_name) in enumerate(fields):
+            CTkLabel(main_frame, text=label_text).grid(row=i, column=0, padx=5, pady=5, sticky="e")
+            entry = CTkEntry(main_frame)
+            entry.grid(row=i, column=1, padx=5, pady=5)
+            self.entries[entry_name] = entry
 
         if car_id:
-            self.car_id_entry.insert(0, str(car_id))
+            self.entries["car_id_entry"].insert(0, str(car_id))
         if data:
-            self.oil_entry.insert(0, data[1])
-            self.filter_entry.insert(0, data[2])
-            self.car_id_entry.insert(0, str(data[0]))
-            self.car_id_entry.configure(state="disabled")
+            self.entries["car_id_entry"].insert(0, str(data[0]))
+            self.entries["oil_entry"].insert(0, data[1] if data[1] else "")
+            self.entries["air_filter_entry"].insert(0, data[2] if data[2] else "")
+            self.entries["transmission_oil_entry"].insert(0, data[3] if data[3] else "")
+            self.entries["cabin_filter_entry"].insert(0, data[4] if data[4] else "")
+            self.entries["oil_filter_entry"].insert(0, data[5] if data[5] else "")
+            self.entries["fuel_filter_entry"].insert(0, data[6] if data[6] else "")
+            self.entries["mileage_entry"].insert(0, data[7] if data[7] else "")
+            self.entries["car_id_entry"].configure(state="disabled")
 
         btns = CTkFrame(main_frame)
-        btns.grid(row=8, column=0, columnspan=2, pady=15)
+        btns.grid(row=len(fields), column=0, columnspan=2, pady=15)
 
         CTkButton(btns, text="Сохранить", command=self.save).pack(side="left", padx=10)
         CTkButton(btns, text="Отмена", command=self.cancel).pack(side="left", padx=10)
 
     def save(self):
         self.result = (
-            int(self.car_id_entry.get()),
-            self.oil_entry.get(),
-            self.filter_entry.get()
+            int(self.entries["car_id_entry"].get()),
+            self.entries["oil_entry"].get(),
+            self.entries["air_filter_entry"].get(),
+            self.entries["transmission_oil_entry"].get(),
+            self.entries["cabin_filter_entry"].get(),
+            self.entries["oil_filter_entry"].get(),
+            self.entries["fuel_filter_entry"].get(),
+            self.entries["mileage_entry"].get()
         )
         self.destroy()
 
@@ -380,8 +384,8 @@ class ServiceDialog(CTkToplevel):
 
 def load_service_history(self):
     """Загрузка списка замен расходников"""
-    from database.GarageBase import get_break_history
-    self.service_records = get_break_history()  # временно используем break_history как заглушку
+    from database.GarageBase import get_service_history
+    self.service_records = get_service_history()
 
     for widget in self.content_frame.winfo_children():
         widget.destroy()
@@ -390,21 +394,23 @@ def load_service_history(self):
         CTkLabel(self.content_frame, text="Нет данных о заменах").pack(pady=20)
         return
 
-    headers = ["ID", "Моторное масло", "Фильтр"]
+    headers = ["ID авто", "Моторное масло", "Возд. фильтр", "Транс. масло",
+               "Салонный фильтр", "Масляный фильтр", "Топливный фильтр", "Пробег"]
 
     header = CTkFrame(self.content_frame)
     header.pack(fill="x", pady=5)
 
     for text in headers:
-        CTkLabel(header, text=text, font=("Arial", 12, "bold"), width=150).pack(side="left", padx=5)
+        CTkLabel(header, text=text, font=("Arial", 10, "bold"), width=100).pack(side="left", padx=2)
 
     for record in self.service_records:
         row = CTkFrame(self.content_frame, height=50, border_width=1, border_color="#ccc")
         row.pack(fill="x", pady=2)
         row.bind("<Button-1>", lambda e, r=record: select_service_record(self, r))
 
-        for i in range(3):
-            CTkLabel(row, text=record[i], width=150).pack(side="left", padx=5)
+        for i in range(8):  # Теперь у нас 8 полей
+            CTkLabel(row, text=record[i] if record[i] is not None else "-",
+                     width=100, font=("Arial", 10)).pack(side="left", padx=2)
 
     self.selected_service = None
 
@@ -418,8 +424,10 @@ def add_service_record(self):
     self.wait_window(dialog)
 
     if dialog.result:
-        car_id, oil, filter_ = dialog.result
-        if add_service_history(car_id, oil, filter_):
+        car_id, oil, air_filter, transmission_oil, cabin_filter, oil_filter, fuel_filter, mileage = dialog.result
+        if add_service_history(car_id, oil, air_filter, transmission_oil, cabin_filter, oil_filter, fuel_filter,
+                               mileage):
+            load_service_history(self)
             load_service_history(self)
 
 
@@ -447,6 +455,7 @@ def delete_service_record(self):
     print(msg)
     self.selected_service = None
     load_service_history(self)
+
 
 class SideWindow(CTkToplevel):
     def __init__(self, parent, title, user_id=None):
@@ -505,11 +514,11 @@ class SideWindow(CTkToplevel):
         self.search_entry.pack(side="left")
 
         CTkButton(
-            self.search_frame, 
+            self.search_frame,
             width=100,
             text="Найти",
             command=self.search_result
-        ).pack(side="right")        
+        ).pack(side="right")
 
         # Контентная область
         self.content_frame = CTkScrollableFrame(main_frame)
@@ -600,23 +609,39 @@ class SideWindow(CTkToplevel):
                 side="left", padx=10)
 
     def load_break_history(self):
-        """Загрузка истории поломок из базы данных"""
+        """Загрузка истории поломок из базы данных только для автомобилей текущего пользователя"""
         # Очищаем контентную область
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
-        # Получаем данные из базы
-        history = get_break_history()
+        # Получаем список автомобилей пользователя
+        user_cars = get_cars()
+        user_car_ids = [car[0] for car in user_cars if car[5] == self.user_id]
 
-        if not history:
+        if not user_car_ids:
             CTkLabel(
                 self.content_frame,
-                text="Нет данных о поломках",
+                text="У вас нет автомобилей в гараже",
                 font=("Arial", 12)
             ).pack(pady=10)
             return
 
-        # Отображаем данные в виде таблицы
+        # Получаем данные из базы только для автомобилей пользователя
+        history = []
+        for car_id in user_car_ids:
+            car_history = get_break_history(car_id)
+            if car_history:
+                history.extend(car_history)
+
+        if not history:
+            CTkLabel(
+                self.content_frame,
+                text="Нет данных о поломках для ваших автомобилей",
+                font=("Arial", 12)
+            ).pack(pady=10)
+            return
+
+        # Остальной код отображения остается без изменений
         headers = ["ID автомобиля", "Описание поломки", "Код ошибки"]
 
         # Заголовки таблицы
@@ -765,10 +790,10 @@ class SideWindow(CTkToplevel):
                 self.edit_btn.configure(state="disabled")
                 self.delete_btn.configure(state="disabled")
                 self.load_break_history()  # Обновляем список
-       
+
     def search_result(self):
         order = self.search_entry.get()
-        
+
         flag = 0
         if ' ' in order:
             order = order.split(' ')
@@ -777,43 +802,40 @@ class SideWindow(CTkToplevel):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
-        car_list = get_cars()
+        # Получаем только автомобили текущего пользователя
+        car_list = [car for car in get_cars() if car[5] == self.user_id]
 
         if self.title_name == "Гараж":
             for car in car_list:
                 if (flag == 0 and order in car) or (flag == 1 and (order[0] in car and order[1] in car)):
-
                     frame = CTkFrame(self.content_frame, height=60, border_width=1, border_color="#ccc")
                     frame.pack(fill="x", pady=3)
                     frame.bind("<Button-1>", lambda e, c=car: select_car(self, c))
 
                     CTkLabel(frame, text=f"{car[1]} | VIN: {car[3]}", font=("Arial", 12)).pack(side="left", padx=10)
 
-                    open_btn = CTkButton(frame, text="Открыть", width=80, command=lambda c=car: show_car_details(self, c))
+                    open_btn = CTkButton(frame, text="Открыть", width=80,
+                                         command=lambda c=car: show_car_details(self, c))
                     open_btn.pack(side="right", padx=10)
 
                 # elif flag == 1 and (order[0] in car and order[1] in car)
-                
+
             if order == '': load_garage(self, self.user_id)
 
         elif self.title_name == "История поломок":
-            
+
             if order != '':
-            
+
                 from database.GarageBase import get_break_history
-                history = get_break_history()
+                history = []
 
-                ids_car = []
                 for car in car_list:
-                    if (flag == 0 and order in car) or (flag ==1 and (order[0] in car and order[1] in car)):
-                        ids_car.append(car[0])
+                    if (flag == 0 and order in car) or (flag == 1 and (order[0] in car and order[1] in car)):
+                        car_history = get_break_history(car[0])
+                        if car_history:
+                            history.extend(car_history)
 
-                needed_history = []
-                for his in history:
-                    if his[0] in ids_car:
-                        needed_history.append(his)
-
-                if not needed_history:
+                if not history:
                     CTkLabel(
                         self.content_frame,
                         text="Нет данных о поломках",
@@ -837,7 +859,7 @@ class SideWindow(CTkToplevel):
                     ).pack(side="left", padx=5)
 
                 # Данные таблицы
-                for record in needed_history:
+                for record in history:
                     record_frame = CTkFrame(
                         self.content_frame,
                         height=50,
@@ -871,45 +893,64 @@ class SideWindow(CTkToplevel):
                         font=("Arial", 12),
                         width=100
                     ).pack(side="left", padx=5)
-                    
-            else: load_service_history(self)
+
+            else:
+                load_service_history(self)
+
 
         elif self.title_name == "Замена расходников":
 
             if order != '':
-                from database.GarageBase import get_break_history
-                self.service_records = get_break_history()
+
+                from database.GarageBase import get_service_history
+
+                self.service_records = get_service_history()
 
                 if not self.service_records:
                     CTkLabel(self.content_frame, text="Нет данных о заменах").pack(pady=20)
+
                     return
 
                 ids_car = []
+
                 for car in car_list:
+
                     if (flag == 0 and order in car) or (flag == 1 and (order[0] in car and order[1] in car)):
                         ids_car.append(car[0])
 
                 needed_service = []
+
                 for ser in self.service_records:
+
                     if ser[0] in ids_car:
                         needed_service.append(ser)
 
-                headers = ["ID", "Моторное масло", "Фильтр"]
+                headers = ["ID авто", "Моторное масло", "Возд. фильтр", "Транс. масло",
+
+                           "Салонный фильтр", "Масляный фильтр", "Топливный фильтр", "Пробег"]
 
                 header = CTkFrame(self.content_frame)
+
                 header.pack(fill="x", pady=5)
 
                 for text in headers:
-                    CTkLabel(header, text=text, font=("Arial", 12, "bold"), width=150).pack(side="left", padx=5)
+                    CTkLabel(header, text=text, font=("Arial", 10, "bold"), width=100).pack(side="left", padx=2)
 
                 for record in needed_service:
+
                     row = CTkFrame(self.content_frame, height=50, border_width=1, border_color="#ccc")
+
                     row.pack(fill="x", pady=2)
+
                     row.bind("<Button-1>", lambda e, r=record: select_service_record(self, r))
 
-                    for i in range(3):
-                        CTkLabel(row, text=record[i], width=150).pack(side="left", padx=5)
+                    for i in range(8):
+                        CTkLabel(row, text=record[i] if record[i] is not None else "-",
+
+                                 width=100, font=("Arial", 10)).pack(side="left", padx=2)
 
                 self.selected_service = None
-            
-            else: load_service_history(self)
+
+            else:
+
+                load_service_history(self)

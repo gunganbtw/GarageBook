@@ -298,15 +298,24 @@ def get_car_by_id(car_id):
     finally:
         conn.close()
 
-def add_service_history(car_id, motor_oil, air_filter):
-    """Добавление записи об обслуживании"""
+def add_service_history(car_id, motor_oil, air_filter, transmission_oil, cabin_filter, oil_filter, fuel_filter, mileage):
+    """Добавление записи об обслуживании (все поля)"""
     conn = get_connection()
     if not conn:
         return False
 
     try:
         with conn.cursor() as cursor:
-            cursor.callproc('add_servis_history', (car_id, motor_oil, air_filter))
+            cursor.callproc('add_servis_history', (
+                car_id,
+                motor_oil,
+                air_filter,
+                transmission_oil,
+                cabin_filter,
+                oil_filter,
+                fuel_filter,
+                mileage
+            ))
             conn.commit()
             return True
     except psycopg2.Error as e:
@@ -314,6 +323,7 @@ def add_service_history(car_id, motor_oil, air_filter):
         return False
     finally:
         conn.close()
+
 
 
 def delete_service_history(car_id):
@@ -353,6 +363,39 @@ def update_service_history(old_car_id, new_car_id=None, motor_oil=None, air_filt
     except psycopg2.Error as e:
         print(f"Ошибка при обновлении записи об обслуживании: {e}")
         return f"Ошибка при обновлении: {e}"
+    finally:
+        conn.close()
+
+def get_service_history(car_id=None):
+    """Получение истории обслуживания"""
+    conn = get_connection()
+    if not conn:
+        return []
+
+    try:
+        with conn.cursor() as cursor:
+            if car_id:
+                cursor.execute(
+                    sql.SQL('''
+                    SELECT car_id, motor_oil, air_filter, transmission_oil, 
+                           cabin_filter, oil_filter, fuel_filter, mileage 
+                    FROM service_history
+                    WHERE car_id = %s
+                    '''),
+                    (car_id,)
+                )
+            else:
+                cursor.execute(
+                    sql.SQL('''
+                    SELECT car_id, motor_oil, air_filter, transmission_oil, 
+                           cabin_filter, oil_filter, fuel_filter, mileage 
+                    FROM service_history
+                    ''')
+                )
+            return cursor.fetchall()
+    except psycopg2.Error as e:
+        print(f"Ошибка при получении истории обслуживания: {e}")
+        return []
     finally:
         conn.close()
 
