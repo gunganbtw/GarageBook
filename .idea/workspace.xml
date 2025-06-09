@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5963e88c-2d4e-42ec-aa92-7ee24d523e43" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/gui/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/side_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui/side_window.py" afterDir="false" />
+>>>>>>> 7d94379d6e1907a62232452d207efeae61da0e74
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +25,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "gunganbtw"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/gunganbtw/GarageBook.git",
+    "accountId": "617c371e-446c-4cee-bb37-f00f5aec8e3e"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -47,8 +64,8 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "new__dev",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Volodya/Desktop/Learning/GarageBook/GarageBook",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+    "last_opened_file_path": "D:/Egor/Docs/Code/GarageBook",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -127,16 +144,16 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.side_window" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.mainwindow" />
-        <item itemvalue="Python.side_window" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-dfff61a61320-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.159" />
+        <option value="bundled-python-sdk-5b207ade9991-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.17890.14" />
       </set>
     </attachedChunks>
   </component>

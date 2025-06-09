@@ -35,38 +35,39 @@ class MainWindow:
 
     def create_interface(self):
         # Блок аккаунта (восстановлен)
-        self.account_frame = CTkFrame(self.root, width=100, height=80, fg_color="grey")
+        self.account_frame = CTkFrame(self.root, width=100, height=90, fg_color="#6989e0")
         self.account_frame.place(relx=0.115, rely=0.181, anchor="ne")
 
         # Кнопка аккаунта
         self.account_btn = CTkButton(
             self.account_frame,
             text="Аккаунт",
+            fg_color="#818181",
+            hover_color="#6a6a6a",
             command=self.show_account_menu
         )
-        self.account_btn.pack(pady=10)
+        self.account_btn.pack(pady=0)
 
         # Блок кнопок
-        self.buttons_frame = CTkFrame(self.root, width=350, height=550, fg_color= None)
+        self.buttons_frame = CTkFrame(self.root, width=350, height=500, fg_color="#40486c")
         self.buttons_frame.pack_propagate(False)
-        self.buttons_frame.place(relx=0.06, rely=0.51, anchor="center")
+        self.buttons_frame.place(relx=0.06, rely=0.55, anchor="center")
 
-        # Блок контактов (восстановлен)
-        self.contacts_frame = CTkFrame(self.root, width=250, height=100, fg_color="grey")
+        # Блок контактов
+        self.contacts_frame = CTkFrame(self.root, width=250, height=100, fg_color="#40336b")
         self.contacts_frame.place(relx=0.12, rely=0.92, anchor="se")
 
         # Контактные данные
         CTkLabel(
             self.contacts_frame,
             text="Контакты:\nТелефон: +7 (960) 003-96-86\nEmail: garagebook@gmail.com"
-        ).pack(pady=10)
+        ).pack(pady=0)
 
         # Основные кнопки
         buttons = [
             ("Гараж", self.open_garage_window),
             ("История поломок", self.open_repairs_window),
             ("Замена расходников", self.open_parts_window),
-            ("Форумы", self.open_forums_window)
         ]
 
         for text, command in buttons:
@@ -75,28 +76,24 @@ class MainWindow:
                 text=text,
                 font=("Arial", 18),
                 height=50,
+                fg_color="#818181",  # Добавили серый цвет
+                hover_color="#6a6a6a",  # Добавили цвет при наведении
                 command=command
             )
             btn.pack(pady=15, fill="x")
 
     def show_account_menu(self):
         """Меню аккаунта (восстановлено)"""
-        self.account_menu = CTkFrame(self.root, width=100, height=80, fg_color="white")
-        self.account_menu.place(relx=0.22, rely=0.15, anchor="ne")
-
-        CTkButton(
-            self.account_menu,
-            text="Настройки",
-            width=180
-        ).pack(pady=5)
+        self.account_menu = CTkFrame(self.root, width=100, height=80, fg_color="#6989e0")
+        self.account_menu.place(relx=0.115, rely=0.215, anchor="ne")
 
         CTkButton(
             self.account_menu,
             text="Выйти",
             fg_color="red",
-            width=180,
+            width=140,
             command=self.logout
-        ).pack(pady=5)
+        ).pack(pady=0)
 
     def logout(self):
         self.root.destroy()
@@ -115,9 +112,6 @@ class MainWindow:
 
     def open_parts_window(self):
         self.open_window("Замена расходников")
-
-    def open_forums_window(self):
-        self.open_window("Форумы")
 
     def run(self):
         self.root.mainloop()
