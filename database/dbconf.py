@@ -1,8 +1,8 @@
 
 DB_CONFIG = {
-   'host' : '83.222.10.241',
-   'database' : 'default_db',
-   'user' : 'gen_user',
-   'password' : 'g{2orANUso'
+   'host' : '0.0.0.0:5432',
+   'database' : 'postgres',
+   'user' : 'postgres',
+   'password' : 'root'
 }
 

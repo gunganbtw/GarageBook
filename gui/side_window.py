@@ -494,6 +494,7 @@ class SideWindow(CTkToplevel):
         self.user_id = user_id
         self.title_name = title
         self.selected_record = None  # Выбранная запись для редактирования/удаления
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Настройки окна
         self.title(title)
@@ -607,15 +608,6 @@ class SideWindow(CTkToplevel):
                 command=self.delete_break_record
             )
             self.delete_btn.pack(side="left", padx=10, pady=5)
-
-            # Кнопка обновить
-            CTkButton(
-                footer_frame,
-                text="Обновить",
-                width=120,
-                height=35,
-                command=self.load_break_history
-            ).pack(side="right", padx=10, pady=5)
 
         if self.title_name == "Гараж":
             load_garage(self, self.user_id)
@@ -738,7 +730,7 @@ class SideWindow(CTkToplevel):
     def select_record(self, record):
         """Выбор записи для редактирования/удаления"""
         self.selected_record = record
-        self.load_break_history()  # Перезагружаем для подсветки
+        self.load_break_history()
 
         # Активируем кнопки редактирования/удаления
         self.edit_btn.configure(state="normal")
@@ -855,11 +847,22 @@ class SideWindow(CTkToplevel):
                     frame.pack(fill="x", pady=3)
                     frame.bind("<Button-1>", lambda e, c=car: select_car(self, c))
 
-                    CTkLabel(frame, text=f"{car[1]} | VIN: {car[3]}", font=("Arial", 12)).pack(side="left", padx=10)
+                    CTkLabel(frame,
+                             text=f"{car[1]} | VIN: {car[3]}",
+                             font=("Arial", 18),
+                             ).pack(expand=True, fill="both", pady=5)
 
-                    open_btn = CTkButton(frame, text="Открыть", width=80,
+                    # Контейнер для кнопки (выравнивание по центру)
+                    button_frame = CTkFrame(frame, fg_color="transparent")
+                    button_frame.pack(side="right", padx=10)
+
+                    open_btn = CTkButton(button_frame,
+                                         text="Открыть",
+                                         width=120,  # Увеличили ширину
+                                         height=40,  # Увеличили высоту
+                                         font=("Arial", 14),  # Увеличили шрифт
                                          command=lambda c=car: show_car_details(self, c))
-                    open_btn.pack(side="right", padx=10)
+                    open_btn.pack(pady=10)
 
                 # elif flag == 1 and (order[0] in car and order[1] in car)
 
@@ -997,3 +1000,7 @@ class SideWindow(CTkToplevel):
             else:
 
                 load_service_history(self)
+
+    def on_close(self):
+        # Отменяем все after-события, если они есть
+        self.destroy()
