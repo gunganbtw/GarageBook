@@ -1,8 +1,9 @@
 
 DB_CONFIG = {
-   'host' : '83.222.10.241',
+   'host' : 'localhost',
+   'port' : '5433',
    'database' : 'default_db',
-   'user' : 'gen_user',
-   'password' : 'g{2orANUso'
+   'user' : 'user',
+   'password' : 'root'
 }
 

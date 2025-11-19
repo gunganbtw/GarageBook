@@ -3,11 +3,13 @@ from database.GarageBase import verify_user, add_user
 
 
 class AuthWindow:
+
+    USER_ID = None
+
     def __init__(self, on_login_success):
         self.on_login_success = on_login_success
 
-
-        ctk.set_appearance_mode("light")
+        ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("green")
 
         self.root = ctk.CTk()
@@ -76,7 +78,7 @@ class AuthWindow:
 
         self.email_label = ctk.CTkLabel(
             main_frame,
-            text="Email (необязательно):",
+            text="Email:",
             state="disabled"
         )
         self.email_entry = ctk.CTkEntry(
@@ -136,7 +138,8 @@ class AuthWindow:
             user = verify_user(username, password)
             if user:
                 self.show_message("Успешный вход!", is_error=False)
-                self.root.after(1000, lambda: self.on_login_success(user[0]))
+                # Передаем весь кортеж user, а не только user[0]
+                self.root.after(1000, lambda: self.on_login_success(user))
             else:
                 self.show_message("Неверное имя пользователя или пароль")
         else:
