@@ -1,3 +1,5 @@
+# В файле main.txt:
+
 from gui.autentefication_window import AuthWindow
 from gui.mainwindow import MainWindow
 
@@ -8,5 +10,10 @@ def on_login_success(user_data):
     main_window.run()
 
 if __name__ == "__main__":
-    auth_window = AuthWindow(on_login_success)
-    auth_window.run()
+    try:
+        auth_window = AuthWindow(on_login_success)
+        auth_window.run()
+    except Exception as e:
+        print(f"Ошибка в программе: {e}")
+        import sys
+        sys.exit(1)

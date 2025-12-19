@@ -17,6 +17,16 @@ class AuthWindow:
         self.root.geometry("400x700")
 
         self.create_widgets()
+        self.root.protocol("WM_DELETE_WINDOW", self.safe_close)
+
+    def safe_close(self):
+        try:
+            # Отменяем все after-события
+            for after_id in self.root.tk.eval('after info').split():
+                self.root.after_cancel(after_id)
+        except:
+            pass
+        self.root.destroy()
 
     def create_widgets(self):
         # Основной фрейм
@@ -139,7 +149,10 @@ class AuthWindow:
             if user:
                 self.show_message("Успешный вход!", is_error=False)
                 # Передаем весь кортеж user, а не только user[0]
-                self.root.after(1000, lambda: self.on_login_success(user))
+                def login_callback():
+                    if self.root.winfo_exists():
+                        self.on_login_success(user)
+                self.root.after(1000, login_callback)
             else:
                 self.show_message("Неверное имя пользователя или пароль")
         else:
@@ -163,7 +176,10 @@ class AuthWindow:
             text=text,
             text_color="red" if is_error else "green"
         )
-        self.root.after(3000, lambda: self.message_label.configure(text=""))
+        def clear_message():
+            if hasattr(self, 'message_label') and self.root.winfo_exists():
+                self.message_label.configure(text="")
+        self.root.after(3000, clear_message)
 
     def run(self):
         self.root.mainloop()

@@ -15,6 +15,38 @@ class MainWindow:
         self.setup_background()
         self.create_interface()
 
+        self.root.protocol("WM_DELETE_WINDOW", self.safe_close)
+
+    def safe_close(self):
+        """Безопасное закрытие главного окна"""
+        print("Закрытие главного окна...")
+        
+        # 1. Закрываем все дочерние окна (SideWindow)
+        if hasattr(self, 'active_window') and self.active_window:
+            try:
+                self.active_window.destroy()
+            except:
+                pass
+        
+        # 2. Отменяем ВСЕ after-события в Tkinter
+        try:
+            # Этот код отменяет абсолютно все after-события
+            script = '''
+            foreach id [after info] {
+                after cancel $id
+            }
+            '''
+            self.root.tk.eval(script)
+        except Exception as e:
+            print(f"Ошибка при отмене after-событий: {e}")
+        
+        # 3. Уничтожаем главное окно
+        self.root.destroy()
+        
+        # 4. Принудительно завершаем программу
+        import sys
+        sys.exit(0)
+
     def setup_background(self):
         try:
             bg_path = os.path.join("assets", "bg_main.png")

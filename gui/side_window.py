@@ -9,7 +9,10 @@ class BreakHistoryDialog(CTkToplevel):
     def __init__(self, parent, title, car_id=None, record_data=None):
         super().__init__(parent)
         self.title(title)
-        self.geometry("400x300")
+        self.geometry("1200x900+{}+{}".format(
+            parent.winfo_x() + 500,
+            parent.winfo_y() + 100
+        ))
         self.resizable(False, False)
         self.grab_set()  # Делаем окно модальным
 
@@ -17,6 +20,7 @@ class BreakHistoryDialog(CTkToplevel):
         self.record_data = record_data
         self.result = None
 
+        self.protocol("WM_DELETE_WINDOW", self.safe_close)
         # Основной фрейм
         main_frame = CTkFrame(self)
         main_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -48,6 +52,23 @@ class BreakHistoryDialog(CTkToplevel):
 
         CTkButton(button_frame, text="Отмена", command=self.cancel).pack(side="left", padx=10)
         CTkButton(button_frame, text="Сохранить", command=self.save).pack(side="left", padx=10)
+
+    def safe_close(self):
+        print('side')
+        """Безопасное закрытие окна"""
+        try:
+            # Отменяем все after-события в этом окне
+            script = '''
+            foreach id [after info] {
+                after cancel $id
+            }
+            '''
+            self.tk.eval(script)
+        except:
+            pass
+        
+        # Уничтожаем окно
+        self.destroy()
 
     def save(self):
         """Сохранение данных"""
@@ -503,11 +524,11 @@ class SideWindow(CTkToplevel):
             parent.winfo_y() + 100
         ))
         self.resizable(False, False)
-        self.attributes("-alpha", 0.9)
+        # self.attributes("-alpha", 0.9)
 
         # Блокировка перемещения
-        self.overrideredirect(True)
-        self.bind("<B1-Motion>", lambda e: "break")
+        # self.overrideredirect(True)
+        # self.bind("<B1-Motion>", lambda e: "break")
 
         # Создание интерфейса
         self.create_interface(title)
